@@ -1,10 +1,6 @@
 package com.fx.arrayList;
 
 import org.junit.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -13,6 +9,19 @@ import java.util.List;
  * Description:测试动态数组
  */
 public class TestArrayList {
+
+    @Test
+    public void test03(){
+        ArrayList2<Integer> list=new ArrayList2<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(i);
+        }
+        System.out.println(list.size());
+        for (int i = 0; i < 50; i++) {
+            list.remove(i);
+        }
+        System.out.println(list.size());
+    }
 
     @Test
     public void test(){

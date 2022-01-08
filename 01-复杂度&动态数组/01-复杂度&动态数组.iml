@@ -20,11 +20,11 @@
     <orderEntry type="module-library">
       <library name="vxIPMI">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/vxIPMI.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Algorithm01/lib/vxIPMI.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/lib/vxIPMI-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Algorithm01/lib/vxIPMI-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
