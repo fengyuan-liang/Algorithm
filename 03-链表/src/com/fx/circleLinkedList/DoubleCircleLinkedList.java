@@ -1,15 +1,19 @@
-package com.fx.linkList;
+package com.fx.circleLinkedList;
+
+import com.fx.linkList.AbstractList;
 
 /**
- * 链表
+ * 双向循环链表
  */
-public class LinkList<E> extends AbstractList<E>{
+public class DoubleCircleLinkedList<E> extends AbstractList<E> {
     private Node<E> first;
     private Node<E> last;
     private static class Node<E> {
         E element;
+        Node<E> prev;
         Node<E> next;
-        public Node(E element, Node<E> next) {
+        public Node(Node<E> prev, E element, Node<E> next) {
+            this.prev = prev;
             this.element = element;
             this.next = next;
         }
@@ -17,6 +21,13 @@ public class LinkList<E> extends AbstractList<E>{
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
+
+            if (prev != null) {
+                sb.append(prev.element);
+            } else {
+                sb.append("null");
+            }
+
             sb.append("_").append(element).append("_");
 
             if (next != null) {
@@ -31,11 +42,28 @@ public class LinkList<E> extends AbstractList<E>{
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-        if(index == 0){
-            first = first == null ? new Node<>(element, null) : new Node<>(element, first);
+        if(index == size){
+            //往最后面添加元素
+            Node<E> oldLast = last;
+            last = new Node<>(oldLast,element,first);
+            if(oldLast==null){//链表添加的第一个元素
+                first=last;
+                first.next=first;
+                first.prev=first;
+            }else {
+                oldLast.next=last;
+                first.prev=last;
+            }
         }else {
-            Node<E> prev=node(index-1);//首先获取上一个结点
-            prev.next= new Node<>(element,prev.next);
+            //往最后一个元素之前添加元素
+            Node<E> next = node(index);
+            Node<E> prev = next.prev;
+            Node<E> newNode = new Node<>(prev, element, next);
+            next.prev=newNode;
+            prev.next=newNode;
+            if(index == 0){//第一个元素添加结点
+                first = newNode;
+            }
         }
         size++;
     }
@@ -48,13 +76,18 @@ public class LinkList<E> extends AbstractList<E>{
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        Node<E> node=first;
-        if(index==0){
-            first=first.next;
+        Node<E> node=node(index);
+        if(index == 0){
+            //移除的是第一个元素
+            first=node.next;
+            node.next.prev=node.prev;
+        }else if(index == size - 1){
+            //最后一个元素为空
+            last=node.prev;
+            node.prev.next=first;
         }else {
-            Node<E> prev = node(index - 1);//先找到前一个元素
-            node = prev.next;
-            prev.next=node.next;
+            node.prev.next=node.next;
+            node.next.prev=node.prev;
         }
         size--;
         return node.element;
@@ -64,6 +97,7 @@ public class LinkList<E> extends AbstractList<E>{
     public void clear() {
         size=0;
         first=null;
+        last=null;
     }
 
     @Override
@@ -122,13 +156,22 @@ public class LinkList<E> extends AbstractList<E>{
      */
     private Node<E> node(int index){
         rangeCheck(index);
-        Node<E> node=first;
-        for (int i = 0; i < index; i++) {
-            node=node.next;
+        Node<E> node=null;
+        if(index < (size) >> 1){
+            //从左往右找
+            node=first;
+            for (int i = 0; i < index; i++) {
+                node=node.next;
+            }
+        }else {
+            //从右往左找
+            node=last;
+            for (int i = size - 1; i > index; i--) {
+                node=node.prev;
+            }
         }
         return node;
     }
-
     @Override
     public String toString() {
         StringBuilder sbf = new StringBuilder();
@@ -144,5 +187,4 @@ public class LinkList<E> extends AbstractList<E>{
         sbf.append("]");
         return sbf.toString();
     }
-
 }

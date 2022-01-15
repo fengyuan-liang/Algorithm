@@ -1,13 +1,15 @@
-package com.fx.linkList;
+package com.fx.circleLinkedList;
+
+import com.fx.linkList.AbstractList;
 
 /**
  * 链表
  */
-public class LinkList<E> extends AbstractList<E>{
+public class SingleCircleLinkList<E> extends AbstractList<E> {
     private Node<E> first;
-    private Node<E> last;
     private static class Node<E> {
         E element;
+        Node<E> prev;
         Node<E> next;
         public Node(E element, Node<E> next) {
             this.element = element;
@@ -17,6 +19,13 @@ public class LinkList<E> extends AbstractList<E>{
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
+
+            if (prev != null) {
+                sb.append(prev.element);
+            } else {
+                sb.append("null");
+            }
+
             sb.append("_").append(element).append("_");
 
             if (next != null) {
@@ -32,7 +41,11 @@ public class LinkList<E> extends AbstractList<E>{
     public void add(int index, E element) {
         rangeCheckForAdd(index);
         if(index == 0){
-            first = first == null ? new Node<>(element, null) : new Node<>(element, first);
+            Node<E> newFirst = new Node<>(element, first);
+            //拿到最后一个结点
+            Node<E> last = (size == 0) ? newFirst : node(size - 1);
+            last.next = newFirst;
+            first = newFirst;
         }else {
             Node<E> prev=node(index-1);//首先获取上一个结点
             prev.next= new Node<>(element,prev.next);

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/00-LeetCode/00-LeetCode.iml" filepath="$PROJECT_DIR$/00-LeetCode/00-LeetCode.iml" />
       <module fileurl="file://$PROJECT_DIR$/01-复杂度&amp;动态数组/01-复杂度&amp;动态数组.iml" filepath="$PROJECT_DIR$/01-复杂度&amp;动态数组/01-复杂度&amp;动态数组.iml" />
       <module fileurl="file://$PROJECT_DIR$/03-链表/03-链表.iml" filepath="$PROJECT_DIR$/03-链表/03-链表.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04-栈/04-栈.iml" filepath="$PROJECT_DIR$/04-栈/04-栈.iml" />
       <module fileurl="file://$PROJECT_DIR$/Algorithm.iml" filepath="$PROJECT_DIR$/Algorithm.iml" />
       <module fileurl="file://$PROJECT_DIR$/DesignPattern/DesignPattern.iml" filepath="$PROJECT_DIR$/DesignPattern/DesignPattern.iml" />
     </modules>
