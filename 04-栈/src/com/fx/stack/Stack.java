@@ -13,6 +13,7 @@ public class Stack<E>{
         return list.size();
     }
 
+
     /**
      * 判断元素是否为空
      */

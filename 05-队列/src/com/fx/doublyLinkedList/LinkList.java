@@ -1,7 +1,5 @@
 package com.fx.doublyLinkedList;
 
-import com.fx.linkList.AbstractList;
-
 /**
  * 双向链表
  */

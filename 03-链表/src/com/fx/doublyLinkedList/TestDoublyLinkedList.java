@@ -12,7 +12,9 @@ public class TestDoublyLinkedList {
         for (int i = 0; i < 100; i++) {
             list.add(i);
         }
-        list.remove(99);
+        for (int i = 0; i < 100; i++) {
+            list.remove(0);
+        }
         System.out.println(list.toString());
     }
 }

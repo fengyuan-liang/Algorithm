@@ -1,4 +1,4 @@
-package _02_栈;
+package _02_栈_队列;
 
 
 import java.util.HashMap;
