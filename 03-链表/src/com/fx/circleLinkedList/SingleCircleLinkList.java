@@ -1,6 +1,6 @@
 package com.fx.circleLinkedList;
 
-import com.fx.linkList.AbstractList;
+import com.fx.linkedList.AbstractList;
 
 /**
  * 链表

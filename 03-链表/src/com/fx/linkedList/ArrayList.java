@@ -1,4 +1,4 @@
-package com.fx.linkList;
+package com.fx.linkedList;
 
 
 import java.util.Arrays;

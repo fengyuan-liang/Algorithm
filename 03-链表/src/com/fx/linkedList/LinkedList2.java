@@ -1,13 +1,13 @@
-package com.fx.linkList;
+package com.fx.linkedList;
 
 /**
  * 在链表头结点前面添加了虚拟头结点，使代码更加严谨且简洁
  */
-public class LinkList2<E> extends AbstractList<E> {
+public class LinkedList2<E> extends AbstractList<E> {
     private Node<E> first;
     private Node<E> last;
 
-    public LinkList2() {
+    public LinkedList2() {
         //创建一个虚拟头结点
         first = new Node<>(null, null);
     }

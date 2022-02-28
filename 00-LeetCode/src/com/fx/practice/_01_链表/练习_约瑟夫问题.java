@@ -1,7 +1,7 @@
-//package _01_链表;
+//package com.fx.practice._01_链表;
 //
 //
-//import utils.AbstractList;
+//import com.fx.practice.utils.AbstractList;
 //
 ///**
 // * @author: 梁峰源

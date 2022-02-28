@@ -1,4 +1,4 @@
-package com.fx.linkList;
+package com.fx.linkedList;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 public class TestLinkList {
     @Test
     public void test2(){
-        List<Integer> list=new LinkList2<>();
+        List<Integer> list=new LinkedList2<>();
         for (int i = 0; i < 100; i++) {
             list.add(i);
         }
@@ -27,7 +27,7 @@ public class TestLinkList {
     }
     @Test
     public void test01(){
-        List<Integer> list=new LinkList<>();
+        List<Integer> list=new LinkedList<>();
         for (int i = 0; i < 50; i++) {
             list.add(i);
         }

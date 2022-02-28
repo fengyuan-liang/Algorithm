@@ -1,4 +1,4 @@
-package _01_链表;
+package com.fx.practice._01_链表;
 
 import java.util.HashSet;
 import java.util.Set;

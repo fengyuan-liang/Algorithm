@@ -3,7 +3,7 @@ package com.fx.doublyLinkedList;
 /**
  * 双向链表
  */
-public class LinkList<E> extends AbstractList<E> {
+public class LinkedList<E> extends AbstractList<E> {
     private Node<E> first;
     private Node<E> last;
     private static class Node<E> {

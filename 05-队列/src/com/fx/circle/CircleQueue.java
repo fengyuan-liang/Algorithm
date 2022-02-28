@@ -11,7 +11,7 @@ public class CircleQueue<E> {
     private int size;
     private E[] elements;
     private int front;//记录队列首元素的位置
-    private final int DEFAULT_CAPACITY = 10;//默认队列大小
+    private static final int DEFAULT_CAPACITY = 10;//默认队列大小
 
     public CircleQueue() {
         elements = (E[]) new Object[DEFAULT_CAPACITY];

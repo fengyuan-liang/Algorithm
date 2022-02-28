@@ -10,7 +10,7 @@ public class CircleDeQueue<E> {
     private int size;
     private E[] elements;
     private int front;//记录队列首元素的位置
-    private final int DEFAULT_CAPACITY = 10;//默认队列大小
+    private static final int DEFAULT_CAPACITY = 10;//默认队列大小
 
     public CircleDeQueue() {
         elements = (E[]) new Object[DEFAULT_CAPACITY];
@@ -23,6 +23,7 @@ public class CircleDeQueue<E> {
         int rearIndex = index(size - 1);
         E element = elements[rearIndex];
         elements[rearIndex] = null;
+        size--;
         return element;
     }
 
@@ -93,7 +94,7 @@ public class CircleDeQueue<E> {
         if (index < 0) {
             index += elements.length;
         }
-        return index % elements.length;
+        return index - (index >= elements.length ? elements.length : 0);
     }
 
     /**
@@ -106,7 +107,7 @@ public class CircleDeQueue<E> {
         int newCapacity = oldCapacity + (oldCapacity >> 1);
         E[] newElements = (E[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
-            newElements[i] = elements[(i + front) % elements.length];
+            newElements[i] = elements[index(i)];
         }
         elements = newElements;
         //重置front的位置

@@ -1,6 +1,6 @@
 package com.fx.queue;
 
-import com.fx.doublyLinkedList.LinkList;
+import com.fx.doublyLinkedList.LinkedList;
 import com.fx.doublyLinkedList.List;
 
 /**
@@ -10,7 +10,7 @@ import com.fx.doublyLinkedList.List;
  */
 public class Queue<E> {
 
-    private final List<E> list=new LinkList<>();
+    private final List<E> list=new LinkedList<>();
 
     /**
      * 元素的数量

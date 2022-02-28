@@ -1,6 +1,6 @@
 package com.fx.utils;
 
-import com.fx.linkList.List;
+import com.fx.linkedList.List;
 
 
 /**

@@ -1,9 +1,11 @@
-package com.fx.linkList;
+package com.fx.practice.utils;
+
+import java.util.List;
 
 /**
  * 线性表抽象类
  */
-public abstract class AbstractList<E> implements List<E>{
+public abstract class AbstractList<E> implements List<E> {
 
     protected int size;//元素的数量
 
@@ -18,8 +20,8 @@ public abstract class AbstractList<E> implements List<E>{
      * @param element 添加到集合中的元素
      */
 
-    public boolean contains(E element){
-        return indexOf(element) !=ELEMENT_NOT_FOUND;
+    public boolean contains(Object element){
+        return indexOf(element) !=-1;
     }
     /**
      * 添加元素检查索引合法性

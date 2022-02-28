@@ -1,4 +1,4 @@
-package _01_链表;
+package com.fx.practice._01_链表;
 
 /**
  * @author: 梁峰源

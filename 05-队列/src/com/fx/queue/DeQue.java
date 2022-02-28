@@ -1,6 +1,6 @@
 package com.fx.queue;
 
-import com.fx.doublyLinkedList.LinkList;
+import com.fx.doublyLinkedList.LinkedList;
 import com.fx.doublyLinkedList.List;
 
 /**
@@ -9,7 +9,7 @@ import com.fx.doublyLinkedList.List;
  * Description:双端队列，即可以在队列两端进行添加和删除操作的队列
  */
 public class DeQue<E> {;
-    private final List<E> list = new LinkList<>();
+    private final List<E> list = new LinkedList<>();
     /**
      * 元素的数量
      */
