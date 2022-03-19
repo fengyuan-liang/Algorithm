@@ -6,10 +6,12 @@ import com.fx.queue.DeQue;
 import com.fx.queue.Queue;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Stack;
 
 /**
  * @author: 梁峰源
@@ -17,6 +19,16 @@ import java.util.Date;
  * Description:
  */
 public class TestMain {
+    Stack<Integer> stack1 = new Stack<>();
+    Stack<Integer> stack2 = new Stack<>();
+    @Test
+    public void test05() throws InterruptedException {
+        Instant i1 = Instant.ofEpochMilli(1646229316266L);
+        System.out.println(Duration.between(i1,Instant.now()).toMinutes());
+        Stack<Integer> stack = new Stack<>();
+
+    }
+
 
     @Test
     public void test04(){
@@ -110,4 +122,6 @@ public class TestMain {
         LocalDateTime localDateTime1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(milli), ZoneOffset.of("+8"));
         System.out.println(localDateTime1);
     }
+
+
 }

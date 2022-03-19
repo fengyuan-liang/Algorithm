@@ -17,10 +17,10 @@ public abstract class AbstractList<E> implements List<E>{
     /**
      * @param element 添加到集合中的元素
      */
-
     public boolean contains(E element){
         return indexOf(element) !=ELEMENT_NOT_FOUND;
     }
+
     /**
      * 添加元素检查索引合法性
      */
