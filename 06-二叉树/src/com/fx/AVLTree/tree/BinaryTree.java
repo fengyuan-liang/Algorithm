@@ -1,5 +1,6 @@
-package com.fx.binarySearchTree;
+package com.fx.AVLTree.tree;
 
+import com.fx.AVLTree.Comparator;
 import com.fx.printer.BinaryTreeInfo;
 
 import java.util.LinkedList;
@@ -7,203 +8,50 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * @author: xxx
- * @date: 2022/3/14 20:12
- * Description: 二叉搜索树
+ * @author: 梁峰源
+ * @date: 2022/3/23 23:21
+ * Description:
  */
 @SuppressWarnings("unchecked")
-public class BinarySearchTree<E> implements BinaryTreeInfo {
+public class BinaryTree<E> implements BinaryTreeInfo {
+    protected int size;//当前树结点个数
+    protected Node<E> root;//根结点
+    protected Comparator<E> comparator;//比较器
     //结点以内部类的形式存在
-    private static class Node<E> {
+    protected static class Node<E> {
         E element;//当前结点保存的元素
         Node<E> left;//左结点
         Node<E> right;//右结点
         Node<E> parent;//父结点
-
         public Node(E element, Node<E> parent) {
             this.element = element;
             this.parent = parent;
         }
-
         public boolean isLeaf() {
             return left == null && right == null;
         }
-
         public boolean hasTwoChildren() {
             return left != null && right != null;
         }
     }
-
-    private int size;//当前树结点个数
-    private Node<E> root;//根结点
-    private Comparator<E> comparator;//比较器
-
-    public BinarySearchTree() {
-
-    }
-
-    public BinarySearchTree(Comparator<E> comparator) {
-        this.comparator = comparator;
-    }
-
-    public void add(E element) {
-        //非空检测
-        elementNotNullCheck(element);
-        //先判断是否为根结点
-        if (root == null) {
-            root = new Node<>(element, null);
-        }
-        //非根结点，非递归进行添加
-        Node<E> node = root;//用来标记移动的结点
-        Node<E> parent = root;//保存当前结点的父结点，默认根结点就是父结点
-        //根据比较规则找到待添加元素的位置
-        int cmp = 0;
-        while (node != null) {
-            //比较值
-            cmp = compare(element, node.element);
-            //保存当前结点的父结点
-            parent = node;
-            if (cmp > 0) {
-                node = node.right;
-            } else if (cmp < 0) {
-                node = node.left;
-            } else {
-                return;
-            }
-        }
-        //添加元素
-        Node<E> newNode = new Node<>(element, parent);
-        if (cmp > 0) {
-            parent.right = newNode;
-        } else {
-            parent.left = newNode;
-        }
-        size++;
-    }
-
-    /**
-     * 对外暴露的删除方法
-     */
-    public void remove(E element) {
-        remove(node(element));
-    }
-
-    /**
-     * 根据结点删除该结点
-     */
-    private void remove(Node<E> node) {
-        if (node == null) return;
-        //优先处理度为2的结点
-        if (node.hasTwoChildren()) {
-            //找到其后继结点
-            Node<E> successor = successor(node);
-            //用后继结点的值覆盖度为2的结点的值
-            node.element = successor.element;
-            //因为度为2的结点的后继或者前驱结点一定是度为1或0，所以将删除结点交给后面的代码来做
-            node = successor;
-        }
-        //删除度为1或者度为0的结点
-        Node<E> replaceNode = node.left != null ? node.left : node.right;
-        /*
-         * 这里有三种情况，需要分类讨论
-         *  1. node是度为1的结点
-         *  2. node是叶子结点并且是根结点
-         *  3. node是叶子结点
-         */
-        if (replaceNode != null) {
-            //先修改node.parent的指向
-            replaceNode.parent = node.parent;
-            //修改parent的left、right指向
-            if(node.parent == null){ //node是度为1的结点且是根结点
-                root = replaceNode;
-            }else if(node == node.parent.left){
-                node.parent.left = replaceNode;
-            }else {
-                node.parent.right = replaceNode;
-            }
-        } else if (node.parent == null) {
-            //node是叶子结点并且是根结点,直接让该结点为null
-            root = null;
-        } else {
-            //叶子结点
-            //父结点的左子树
-            if (node == node.parent.left) {
-                node.parent.left = null;
-            } else {
-                //父结点右子树
-                node.parent.right = null;
-            }
-        }
-        size--;
-    }
-
-    /**
-     * 根据传入的元素找到结点
-     */
-    private Node<E> node(E element) {
-        Node<E> node = root;
-        while (node != null) {
-            int cmp = compare(element, node.element);
-            if (cmp == 0) return node;
-            if (cmp > 0) {
-                node = node.right;
-            } else {
-                node = node.left;
-            }
-        }
-        //没找到
-        return null;
-    }
-
-    public boolean contains(E e) {
-        return node(e) != null;
-    }
-
-
-    /**
-     * 规定传入对象的比较规则
-     *
-     * @param e1 第一个对象
-     * @param e2 第二个对象
-     * @return 0表示相等，大于0表示 e1 > e2,小于0表示 e2 < e1
-     */
-    private int compare(E e1, E e2) {
-        if (comparator != null) {
-            return comparator.compare(e1, e2);
-        }
-        return ((java.lang.Comparable<E>) e1).compareTo(e2);
-    }
-
     /**
      * 返回树结点个数
      */
     public int size() {
         return size;
     }
-
     /**
      * 判断树是否为空
      */
     public boolean isEmpty() {
         return size == 0;
     }
-
     /**
      * 清空当前树
      */
     public void clear() {
         root = null;
         size = 0;
-    }
-
-
-    /**
-     * 判断元素是否为空
-     */
-    private void elementNotNullCheck(E element) {
-        if (element == null) {
-            throw new IllegalArgumentException("element must not be null");
-        }
     }
 
     /**
@@ -250,40 +98,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     }
 
     /**
-     * 判断该树是否是一棵完全二叉树
-     *
-     * @return true是<br>false不是
-     */
-    public boolean isComplete() {
-        if (root == null) return false;
-        Queue<Node<E>> queue = new LinkedList<>();
-        //将根结点入队
-        queue.offer(root);
-        //标记上一次访问的结点是否度为一且子树为左子树
-        boolean flag = false;
-        //遍历所有结点
-        Node<E> node;
-        while (!queue.isEmpty()) {
-            //出队
-            node = queue.poll();
-            //上一次访问的结点左子树存在右子树不存在那么这次访问的结点必须是叶子结点
-            if (flag && !node.isLeaf()) return false;
-            if (node.left != null) {
-                queue.offer(node.left);
-            } else if (node.right != null) {
-                return false;
-            }
-            if (node.right != null) {
-                queue.offer(node.right);
-            } else {
-                flag = true;
-            }
-        }
-        return true;
-    }
-
-
-    /**
      * 遍历接口
      *
      * @param <E> visit 返回true表示停止遍历<br>返回false表示不停止，继续遍历
@@ -293,7 +107,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
          * stop用来标记递归遍历中是否需要停止遍历
          */
         boolean stop = false;
-
         abstract boolean visit(E element);
     }
 
@@ -304,7 +117,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (visitor == null) throw new IllegalArgumentException("visitor不能为空");
         preorderTraversal(root, visitor);
     }
-
     private void preorderTraversal(Node<E> node, Visitor<E> visitor) {
         if (node == null) return;
         //回调
@@ -313,18 +125,15 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         preorderTraversal(node.left, visitor);
         preorderTraversal(node.right, visitor);
     }
-
     /**
      * 栈实现前序遍历
      */
     private final Stack<Node<E>> stack = new Stack<>();
-
     public void preorderTraversalByStack(Visitor<E> visitor) {
         if (root == null) throw new IllegalArgumentException("Visitor不能为空");
         //将根元素入栈
         preorderTraversalByStack(root, visitor);
     }
-
     private void preorderTraversalByStack(Node<E> popNode, Visitor<E> visitor) {
         while (popNode != null) {
             //回调
@@ -342,7 +151,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             popNode = stack.isEmpty() ? null : stack.pop();
         }
     }
-
     /**
      * 中序遍历（递归实现）
      */
@@ -350,7 +158,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (visitor == null) throw new IllegalArgumentException("visitor不能为空");
         inorderTraversal(root, visitor);
     }
-
     private void inorderTraversal(Node<E> node, Visitor<E> visitor) {
         if (node == null || visitor.stop) return;
         inorderTraversal(node.left, visitor);
@@ -359,7 +166,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         visitor.stop = visitor.visit(node.element);
         inorderTraversal(node.right, visitor);
     }
-
     /**
      * 中序栈实现
      */
@@ -367,7 +173,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (root == null || visitor == null) throw new IllegalArgumentException("Visitor不能为空");
         inorderTraversalByStack(root, visitor);
     }
-
     private void inorderTraversalByStack(Node<E> popNode, Visitor<E> visitor) {
         //只要左结点存在就一直入栈
         while (true) {
@@ -383,7 +188,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             }
         }
     }
-
     /**
      * 后序遍历
      */
@@ -391,7 +195,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (visitor == null) throw new IllegalArgumentException("visitor不能为空");
         postorderTraversal(root, visitor);
     }
-
     public void postorderTraversal(Node<E> node, Visitor<E> visitor) {
         if (node == null || visitor.stop) return;
         postorderTraversal(node.left, visitor);
@@ -399,42 +202,36 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (visitor.stop) return;
         visitor.stop = visitor.visit(node.element);
     }
-
     /**
      * 后序遍历非递归实现
      */
     public void postorderTraversalByStack() {
         postorderTraversalByStack(root);
     }
-
-    public void postorderTraversalByStack(Node<E> root) {
-        if (root == null) return;
-        Stack<Node<E>> stack = new Stack<>();
-        stack.push(root);
-        Node<E> temp = null;
+    public void postorderTraversalByStack(Node<E> popNode) {
+        //先将根结点入栈
+        stack.push(popNode);
+        Node<E> preNode = popNode;//记录一下上一次访问的结点
         while (!stack.isEmpty()) {
-            temp = stack.pop();
-            //业务逻辑
-            System.out.println(temp);
-            if (temp.left != null) {
-                stack.push(temp.left);
-            }
-            if (temp.right != null) {
-                stack.push(temp.right);
+            //如果是叶子结点
+            if (isLeafNode(stack.peek()) || isPeekStack(preNode)) {
+                popNode = stack.pop();
+                System.out.println(popNode.element);
+            } else {
+                if (popNode.right != null) stack.push(popNode.right);
+                if (popNode.left != null) stack.push(popNode.left);
+                preNode = popNode;
+                popNode = stack.peek();
             }
         }
     }
-
     private boolean isLeafNode(Node<E> node) {
         System.out.println(node.element);
         return node.left == null && node.right == null;
     }
-
     private boolean isPeekStack(Node<E> node) {
         return stack.peek().left == node || stack.peek().right == node;
     }
-
-
     /**
      * 层序遍历接口暴露
      *
@@ -455,10 +252,11 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
     }
 
+
     /**
      * 找到当前结点的前驱结点
      */
-    public Node<E> predecessor(Node<E> node) {
+    protected Node<E> predecessor(Node<E> node) {
         if (node == null) throw new IllegalArgumentException("node不能为空");
         //前驱结点在左子树当中(left.right.right.......)
         Node<E> p = node.left;
@@ -472,7 +270,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         while (node.parent != null && node == node.parent.left) {
             node = node.parent;
         }
-
         /*
          * 这里有两种情况
          *  1. node.parent == null
@@ -480,11 +277,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
          */
         return node.parent;
     }
-
     /**
      * 找到其后继结点
      */
-    public Node<E> successor(Node<E> node) {
+    protected Node<E> successor(Node<E> node) {
         if (node == null) throw new IllegalArgumentException("node不能为空");
         Node<E> p = node.right;
         //第一种情况，其后继结点为node.right.left.left...
@@ -494,12 +290,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             }
             return p;
         }
-
         //从祖父结点里面找
         while (node.parent != null && node == node.parent.right) {
             node = node.parent;
         }
-
         /*
          * 来到这里有两种情况
          *  1. node.right = null
@@ -507,6 +301,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
          */
         return node.parent;
     }
+
 
     @Override
     public Object root() {

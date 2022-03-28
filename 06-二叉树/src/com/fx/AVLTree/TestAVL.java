@@ -1,12 +1,11 @@
-package com.fx.binarySearchTree;
+package com.fx.AVLTree;
 
+import com.fx.AVLTree.tree.AVLTree;
+import com.fx.AVLTree.tree.BinarySearchTree;
+import com.fx.AVLTree.tree.BinaryTree;
 import com.fx.printer.BinaryTrees;
 import org.junit.Test;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,12 +15,12 @@ import java.util.List;
  * @date: 2022/3/14 22:07
  * Description:
  */
-public class TestBST {
+public class TestAVL {
 
     /**
      * 自定义比较规则1
      */
-    private static class PersonComparator implements Comparator<Person>{
+    private static class PersonComparator implements Comparator<Person> {
 
         @Override
         public int compare(Person e1, Person e2) {
@@ -31,7 +30,7 @@ public class TestBST {
     /**
      * 自定义比较规则2
      */
-    private static class PersonComparator2 implements Comparator<Person>{
+    private static class PersonComparator2 implements Comparator<Person> {
 
         @Override
         public int compare(Person e1, Person e2) {
@@ -42,10 +41,10 @@ public class TestBST {
     @Test
     public void test01(){
         int[] arr = new int[]{7,4,9,2,5,8,11,3};
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-        Arrays.stream(arr).forEach(bst::add);
-        BinaryTrees.println(bst);
-        bst.inorderTraversalByStack(new BinarySearchTree.Visitor<Integer>() {
+        AVLTree<Integer> avlTree = new AVLTree<>();
+        Arrays.stream(arr).forEach(avlTree::add);
+        BinaryTrees.println(avlTree);
+        avlTree.inorderTraversalByStack(new BinaryTree.Visitor<Integer>() {
             @Override
             boolean visit(Integer element) {
                 System.out.print(element + " ");
@@ -53,7 +52,7 @@ public class TestBST {
             }
         });
         System.out.println();
-        bst.inorderTraversal(new BinarySearchTree.Visitor<Integer>() {
+        avlTree.inorderTraversal(new BinaryTree.Visitor<Integer>() {
             @Override
             boolean visit(Integer element) {
                 System.out.print(element + " ");
@@ -123,34 +122,16 @@ public class TestBST {
 
     @Test
     public void test04(){
-//        int[] arr = new int[]{1,3,2,5,9,6,7};
-//        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-//        //将数据添加到BST中
-//        Arrays.stream(arr).forEach(bst::add);
-//        BinaryTrees.println(bst);
-//        System.out.println(bst.isComplete());
-        System.out.println(LocalDateTime.now());
-        System.out.println(System.currentTimeMillis());
+        int[] arr = new int[]{1,3,2,5,9,6,7};
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        //将数据添加到BST中
+        Arrays.stream(arr).forEach(bst::add);
+        BinaryTrees.println(bst);
+        System.out.println(bst.isComplete());
     }
 
     @Test
-    public void test05() throws Exception {
-        File file = new File("E:\\wps文件和md笔记\\test");
-        //拿到所有的文件
-        File[] files = file.listFiles();
-        for(File f : files){
-            System.out.println(f.getName());
-            BufferedInputStream bit = new BufferedInputStream(new FileInputStream(f));
-            int len = -1;
-            byte[] bt = new byte[1024 * 10];
-            StringBuilder sb = new StringBuilder();
-            while ((len = bit.read(bt)) != -1){
-                sb.append(new String(bt, 0,len));
-            }
-            String pre = "https://gitee.com/fengxian_duck/resources/raw/master/202203091444446.png";
-            String url = "https://cdn.fengxianhub.top/resources-master";
-            System.out.println(sb.toString().replace(pre,url));
-        }
+    public void test05(){
     }
 
 }
