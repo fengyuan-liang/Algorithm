@@ -1,7 +1,6 @@
 package com.fx.practice._03_二叉树;
 
 import com.fx.practice.utils.TreeNode;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -72,6 +71,7 @@ public class _450_删除二叉搜索树中的节点 {
             if(parent.left == null) parent.right = node.left;
             else parent.left = node.left;
         }
+        return null;
     }
 
     /**

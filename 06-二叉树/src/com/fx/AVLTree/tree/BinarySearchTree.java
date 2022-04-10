@@ -85,6 +85,16 @@ public class BinarySearchTree<E> extends BinaryTree<E> {
     }
 
     /**
+     * 删除结点时判断是否进行平衡
+     * @param node 删除的结点
+     */
+    protected void afterRemove(Node<E> node){
+
+    }
+
+
+
+    /**
      * 对外暴露的删除方法
      */
     public void remove(E element) {
@@ -138,6 +148,8 @@ public class BinarySearchTree<E> extends BinaryTree<E> {
             }
         }
         size--;
+        //删除结点之后的处理
+        afterRemove(node);
     }
 
     /**
@@ -220,6 +232,4 @@ public class BinarySearchTree<E> extends BinaryTree<E> {
         }
         return true;
     }
-
-
 }

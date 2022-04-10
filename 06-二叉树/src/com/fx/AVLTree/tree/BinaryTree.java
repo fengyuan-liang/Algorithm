@@ -33,7 +33,16 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         public boolean hasTwoChildren() {
             return left != null && right != null;
         }
+        public boolean isLeftChild(){
+            return parent != null && this == parent.left;
+        }
+        public boolean isRightChild(){
+            return parent != null && this == parent.right;
+        }
+
     }
+
+
     /**
      * 返回树结点个数
      */
@@ -320,6 +329,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
     @Override
     public Object string(Object node) {
-        return ((Node<E>) node).element;
+        return node;
     }
 }
