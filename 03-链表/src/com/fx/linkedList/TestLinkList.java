@@ -25,6 +25,8 @@ public class TestLinkList {
         list.clear();
         System.out.println(list.toString());
     }
+
+
     @Test
     public void test01(){
         List<Integer> list=new LinkedList<>();
@@ -34,5 +36,22 @@ public class TestLinkList {
         list.remove(21);
         list.add(0,100);
         System.out.println(list.toString());
+    }
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    public static void main(String[] args) throws InterruptedException {
+        Object lock = new Object();
+        synchronized (lock){
+            lock.wait(10000);
+        }
     }
 }
