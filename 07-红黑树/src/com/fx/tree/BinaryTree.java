@@ -1,6 +1,5 @@
-package com.fx.AVLTree.tree;
+package com.fx.tree;
 
-import com.fx.AVLTree.Comparator;
 import com.fx.printer.BinaryTreeInfo;
 
 import java.util.LinkedList;
@@ -18,11 +17,11 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     protected Node<E> root;//根结点
     protected Comparator<E> comparator;//比较器
     //结点以内部类的形式存在
-    protected static class Node<E> {
-        E element;//当前结点保存的元素
-        Node<E> left;//左结点
-        Node<E> right;//右结点
-        Node<E> parent;//父结点
+    public static class Node<E> {
+        public E element;//当前结点保存的元素
+        public Node<E> left;//左结点
+        public Node<E> right;//右结点
+        public Node<E> parent;//父结点
         public Node(E element, Node<E> parent) {
             this.element = element;
             this.parent = parent;
@@ -39,7 +38,17 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         public boolean isRightChild(){
             return parent != null && this == parent.right;
         }
-
+        // 返回当前结点的兄弟结点
+        public Node<E> sibling(){
+            if(isLeftChild()){
+                return parent.right;
+            }
+            if(isRightChild()){
+                return parent.left;
+            }
+            //没有兄弟结点
+            return null;
+        }
     }
 
 

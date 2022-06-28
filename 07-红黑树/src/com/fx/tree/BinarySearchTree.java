@@ -1,4 +1,4 @@
-package com.fx.binarySearchTree2;
+package com.fx.tree;
 
 
 import java.util.LinkedList;
@@ -10,8 +10,7 @@ import java.util.Queue;
  * Description: 二叉搜索树
  */
 @SuppressWarnings("unchecked")
-public class BinarySearchTree<E> extends BinaryTree<E>{
-
+public class BinarySearchTree<E> extends BinaryTree<E> {
 
 
     public BinarySearchTree() {
@@ -22,12 +21,18 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
         super.comparator = comparator;
     }
 
+    /**
+     * 添加结点
+     * @param element 待添加的元素
+     */
     public void add(E element) {
         //非空检测
         elementNotNullCheck(element);
-        //先判断是否为根结点
+        //先判断是否为根结点，如果根结点为空则添加根结点
         if (root == null) {
-            root = new Node<>(element, null);
+            root = createNode(element,null);
+            size++;
+            return;
         }
         //非根结点，非递归进行添加
         Node<E> node = root;//用来标记移动的结点
@@ -48,14 +53,44 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
             }
         }
         //添加元素
-        Node<E> newNode = new Node<>(element, parent);
+        Node<E> newNode = createNode(element,parent);
         if (cmp > 0) {
             parent.right = newNode;
         } else {
             parent.left = newNode;
         }
         size++;
+        //判断是否需要平衡这棵二叉树
+        afterAdd(newNode);
     }
+
+    /**
+     * 创建结点
+     * @param element 结点中的元素
+     * @param parent 当前结点的父结点
+     * @return 返回创建好的结点
+     */
+    protected Node<E> createNode(E element,Node<E> parent){
+        return new Node<>(element,parent);
+    }
+
+    /**
+     * 判断添加结点后是否需要平衡二叉树
+     * @param node 新添加的结点
+     */
+    protected void afterAdd(Node<E> node){
+
+    }
+
+    /**
+     * 删除结点时判断是否进行平衡
+     * @param node 删除的结点
+     */
+    protected void afterRemove(Node<E> node){
+
+    }
+
+
 
     /**
      * 对外暴露的删除方法
@@ -90,11 +125,11 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
             //先修改node.parent的指向
             replaceNode.parent = node.parent;
             //修改parent的left、right指向
-            if(node.parent == null){ //node是度为1的结点且是根结点
+            if (node.parent == null) { //node是度为1的结点且是根结点
                 root = replaceNode;
-            }else if(node == node.parent.left){
+            } else if (node == node.parent.left) {
                 node.parent.left = replaceNode;
-            }else {
+            } else {
                 node.parent.right = replaceNode;
             }
         } else if (node.parent == null) {
@@ -111,6 +146,8 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
             }
         }
         size--;
+        //删除结点之后的处理
+        afterRemove(node);
     }
 
     /**
@@ -151,7 +188,6 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
     }
 
 
-
     /**
      * 判断元素是否为空
      */
@@ -160,7 +196,6 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
             throw new IllegalArgumentException("element must not be null");
         }
     }
-
 
 
     /**
@@ -195,6 +230,4 @@ public class BinarySearchTree<E> extends BinaryTree<E>{
         }
         return true;
     }
-
-
 }

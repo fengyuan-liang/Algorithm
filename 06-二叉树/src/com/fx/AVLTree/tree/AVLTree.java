@@ -20,7 +20,7 @@ public class AVLTree<E> extends BinarySearchTree<E> {
      *
      * @param <E>
      */
-    private static class AVLNode<E> extends BinaryTree.Node<E> {
+    private static class AVLNode<E> extends Node<E> {
         int height = 1;//AVL树有平衡因子的概念，需要有高度，默认高度为1
 
         public AVLNode(E element, Node<E> parent) {

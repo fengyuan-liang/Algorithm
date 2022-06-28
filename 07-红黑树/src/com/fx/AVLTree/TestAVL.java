@@ -1,7 +1,6 @@
 package com.fx.AVLTree;
 
 import com.fx.AVLTree.tree.AVLTree;
-import com.fx.AVLTree.tree.BinarySearchTree;
 import com.fx.printer.BinaryTrees;
 import org.junit.Test;
 

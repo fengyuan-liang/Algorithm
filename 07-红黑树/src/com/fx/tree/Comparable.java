@@ -1,4 +1,4 @@
-package com.fx.AVLTree;
+package com.fx.tree;
 
 /**
  * 比较接口

@@ -1,4 +1,4 @@
-package com.fx.AVLTree;
+package com.fx.tree;
 
 /**
  * 比较器，可以在类外面自定义比较规则
