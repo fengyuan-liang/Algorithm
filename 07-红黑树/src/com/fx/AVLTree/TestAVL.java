@@ -2,6 +2,7 @@ package com.fx.AVLTree;
 
 import com.fx.AVLTree.tree.AVLTree;
 import com.fx.printer.BinaryTrees;
+import com.fx.tree.BinarySearchTree;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -15,6 +16,9 @@ import java.util.List;
  * Description:
  */
 public class TestAVL {
+    public static void main(String[] args) {
+        System.out.println(111);
+    }
 
     @Test
     public void test01() {

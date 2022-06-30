@@ -131,7 +131,7 @@ public class AVLTree<E> extends BBST<E> {
     protected void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
         super.afterRotate(grand, parent, child);
         // 只有AVL树才有高度的概念
-        //更新高度，先比较矮的结点再更新较高的结点
+        //更新高度，先更新比较矮的结点再更新较高的结点
         updateHeight(grand);
         updateHeight(parent);
     }
@@ -149,6 +149,7 @@ public class AVLTree<E> extends BBST<E> {
                           Node<E> f,
                           Node<E> g) {
         super.rotate(r, a, b, c, d, e, f, g);
+        // 统一处理高度
         //更新b结点的高度
         updateHeight(b);
         //更新f结点的高度
@@ -188,22 +189,6 @@ public class AVLTree<E> extends BBST<E> {
         }
     }
 
-    /**
-     * 对该元素进行左旋转
-     *
-     * @param grand 待旋转的结点
-     */
-    private void rotateLeft(Node<E> grand) {
-        //获得parent结点
-        Node<E> parent = grand.right;
-        //将parent的左子结点取出
-        Node<E> leftChild = parent.left;
-        //左旋
-        grand.right = leftChild;
-        parent.left = grand;
-        //旋转之后让parent结点成为根结点并更新grand、parent、child结点的高度
-        afterRotate(grand, parent, leftChild);
-    }
 
     /**
      * 判断当前结点是否平衡
