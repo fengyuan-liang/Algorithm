@@ -39,19 +39,12 @@ public class TestLinkList {
     }
 
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    public static void main(String[] args) throws InterruptedException {
-        Object lock = new Object();
-        synchronized (lock){
-            lock.wait(10000);
-        }
+    @Test
+    public void test03() {
+        List<Integer> list = new LinkedList2<>();
+        list.add(10);
+        list.add(10);
+        list.add(10);
+        System.out.println(list.toString());
     }
 }
