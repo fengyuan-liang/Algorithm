@@ -91,7 +91,6 @@ public class BinarySearchTree<E> extends BinaryTree<E> {
     }
 
 
-
     /**
      * 对外暴露的删除方法
      */
@@ -132,9 +131,13 @@ public class BinarySearchTree<E> extends BinaryTree<E> {
             } else {
                 node.parent.right = replaceNode;
             }
+            //删除结点之后的处理
+            afterRemove(replaceNode);
         } else if (node.parent == null) {
             //node是叶子结点并且是根结点,直接让该结点为null
             root = null;
+            //删除结点之后的处理，这里不需要替代
+            afterRemove(node);
         } else {
             //叶子结点
             //父结点的左子树
@@ -144,10 +147,10 @@ public class BinarySearchTree<E> extends BinaryTree<E> {
                 //父结点右子树
                 node.parent.right = null;
             }
+            //删除结点之后的处理，这里也不需要替代
+            afterRemove(node);
         }
         size--;
-        //删除结点之后的处理
-        afterRemove(node);
     }
 
     /**

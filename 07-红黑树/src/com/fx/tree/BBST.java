@@ -71,7 +71,7 @@ public class BBST<E> extends BinarySearchTree<E> {
      * @param grand 待旋转的结点
      */
     protected void rotateLeft(Node<E> grand) {
-        if(null == grand) return;
+        if (null == grand) return;
         //获得parent结点
         Node<E> parent = grand.right;
         //将parent的左子结点取出
@@ -82,7 +82,6 @@ public class BBST<E> extends BinarySearchTree<E> {
         //旋转之后让parent结点成为根结点并更新grand、parent、child结点的高度
         afterRotate(grand, parent, leftChild);
     }
-
 
 
     /**
@@ -132,4 +131,5 @@ public class BBST<E> extends BinarySearchTree<E> {
         grand.parent = parent;
 
     }
+
 }
