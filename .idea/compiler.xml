@@ -6,12 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="13-十大经典排序" />
         <module name="09-哈希表" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="07-红黑树" target="1.8" />
       <module name="09-哈希表" target="1.8" />
+      <module name="13-十大经典排序" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

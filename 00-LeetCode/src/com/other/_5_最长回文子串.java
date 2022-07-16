@@ -59,6 +59,9 @@ public class _5_最长回文子串 {
         return match2(chars, left + 1, right - 1);
     }
 
+    /**
+     * 动态规划
+     */
     public String longestPalindromeByOfficial(String s) {
         int len = s.length();
         if (len < 2) {

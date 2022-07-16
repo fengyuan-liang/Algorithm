@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/07-红黑树/07-红黑树.iml" filepath="$PROJECT_DIR$/07-红黑树/07-红黑树.iml" />
       <module fileurl="file://$PROJECT_DIR$/08-集合/08-集合.iml" filepath="$PROJECT_DIR$/08-集合/08-集合.iml" />
       <module fileurl="file://$PROJECT_DIR$/09-哈希表/09-哈希表.iml" filepath="$PROJECT_DIR$/09-哈希表/09-哈希表.iml" />
+      <module fileurl="file://$PROJECT_DIR$/13-十大经典排序/13-十大经典排序.iml" filepath="$PROJECT_DIR$/13-十大经典排序/13-十大经典排序.iml" />
       <module fileurl="file://$PROJECT_DIR$/Algorithm.iml" filepath="$PROJECT_DIR$/Algorithm.iml" />
       <module fileurl="file://$PROJECT_DIR$/DesignPattern/DesignPattern.iml" filepath="$PROJECT_DIR$/DesignPattern/DesignPattern.iml" />
     </modules>

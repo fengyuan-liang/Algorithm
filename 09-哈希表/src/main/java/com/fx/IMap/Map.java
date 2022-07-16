@@ -1,5 +1,7 @@
 package com.fx.IMap;
 
+import java.util.function.BiConsumer;
+
 /**
  * Map 接口
  * @param <K>
@@ -20,6 +22,11 @@ public interface Map<K, V> {
 
     V remove(K key);
 
+    void forEach(BiConsumer<? super K, ? super V> action);
+
+    /**
+     * 是否包含key
+     */
     boolean containsKey(K key);
 
     boolean containsValue(V value);
