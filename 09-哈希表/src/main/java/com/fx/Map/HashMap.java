@@ -30,6 +30,10 @@ public class HashMap<K, V> implements Map<K, V> {
      * 数组默认的大小，必须是2的幂，1 << 4可以更方便看出幂关系
      */
     private static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+    /**
+     * 装填因子，等于节点总数量 / 哈希表桶数组长度
+     */
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
      * 基于红黑树根结点的数组，每一个桶的位置都是一个红黑树根结点
@@ -126,17 +130,31 @@ public class HashMap<K, V> implements Map<K, V> {
      * 计算Key的索引
      */
     private int index(K key) {
+        return hash(key) & (table.length - 1);
+    }
+
+    /**
+     * 对key进行扰动计算
+     */
+    private int hash(K key) {
         // HashMap运行key为空，为空我们将其放到数组下标为0的位置
         if (key == null) return 0;
         // 计算hashCode
         int hashCode = key.hashCode();
         // 拿高16位和低16位进行混淆运算，让hash值更加离散，减少hash冲突
         hashCode = hashCode ^ (hashCode >>> 16);
-        return hashCode & (table.length - 1);
+        return hashCode;
+    }
+
+    private int index(Node<K, V> node) {
+        return node.hashCode & (table.length - 1);
     }
 
     @Override
     public V put(K key, V value) {
+        // 检测是否需要扩容
+        resize();
+
         // 拿到索引
         int index = index(key);
         // 取出index位置上的红黑树结点
@@ -154,13 +172,12 @@ public class HashMap<K, V> implements Map<K, V> {
         Node<K, V> parent = rootNode;
         Node<K, V> node = rootNode;
         int cmp = 0;
-        K k1 = key;
         // 计算添加结点key的hash值
-        int h1 = key == null ? 0 : key.hashCode();
+        int h1 = hash(key);
         // 定义一个中间变量
         Node<K, V> result = null;
         // 用来标记是否已经扫描过整棵树了
-        boolean search = false;
+        boolean searched = false;
         do {
             parent = node;
             K k2 = node.key;
@@ -170,26 +187,27 @@ public class HashMap<K, V> implements Map<K, V> {
                 cmp = 1;
             } else if (h1 < h2) {
                 cmp = -1;
-            } else if (Objects.equals(k1, k2)) { // 通过equals方法比较
+            } else if (Objects.equals(key, k2)) { // 通过equals方法比较
                 cmp = 0;
-            } else if (k1 != null && k2 != null // 比较类名或者自身的compareTo方法
-                    && k1.getClass() == k2.getClass()
-                    && k1 instanceof Comparable) {
-                cmp = ((Comparable) k1).compareTo(k2);
-            } else if (search) {
+            } else if (key != null && k2 != null // 比较类名或者自身的compareTo方法
+                    && key.getClass() == k2.getClass()
+                    && key instanceof Comparable
+                    && (cmp = ((Comparable) key).compareTo(k2)) != 0) {
+                // nothing to do
+            } else if (searched) {
                 // 之前已经扫描过了，发现没有该结点，直接比较内存地址即可
-                cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+                cmp = System.identityHashCode(key) - System.identityHashCode(k2);
             } else {
                 // 扫描整棵红黑树，看该结点是否已经出现过了
-                if ((node.left != null && (result = node(node.left, k1)) != null)
-                        || (node.right != null && (result = node(node.right, k1)) != null)) {
+                if ((node.left != null && (result = node(node.left, key)) != null)
+                        || (node.right != null && (result = node(node.right, key)) != null)) {
                     // 表示已经存在这个key
                     node = result;
                     cmp = 0;
                 } else {
-                    cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+                    cmp = System.identityHashCode(key) - System.identityHashCode(k2);
                     // 标记已经整棵树扫描过了
-                    search = true;
+                    searched = true;
                 }
             }
             /*----------------------------下面是红黑树结点的摆放---------------------------------*/
@@ -223,6 +241,19 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     /**
+     * 判断是否需要对数组容量进行扩容
+     */
+    private void resize() {
+        // 装填因子小于等于0.75
+        if(size / table.length <= DEFAULT_LOAD_FACTOR) return;
+        // 先保留一下旧的数组
+        Node<K,V>[] oldTable = table;
+        // 扩容两倍
+        table = new Node[oldTable.length >> 1];
+    }
+
+
+    /**
      * 通过key找到node结点
      */
     private Node<K, V> node(K key) {
@@ -235,13 +266,14 @@ public class HashMap<K, V> implements Map<K, V> {
      * 通过key找到node结点
      */
     private Node<K, V> node(Node<K, V> node, K k1) {
-        // 先计算hash值
-        int h1 = k1 == null ? 0 : k1.hashCode();
+        // 先计算hash值，k1需要经过扰动计算
+        int h1 = hash(k1);
         // 存放查找的结果
         Node<K, V> result = null;
         int cmp = 0;
         while (node != null) {
             K k2 = node.key;
+            // h2是经过了扰动计算的
             int h2 = node.hashCode;
             // 先比较hash值
             if (h1 > h2) {
