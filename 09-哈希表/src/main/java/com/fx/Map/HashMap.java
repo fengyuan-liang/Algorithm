@@ -53,7 +53,7 @@ public class HashMap<K, V> implements Map<K, V> {
      * @param <K>
      * @param <V>
      */
-    private static class Node<K, V> {
+    protected static class Node<K, V> {
         K key;
         V value;
         int hashCode;
@@ -154,22 +154,22 @@ public class HashMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         // 检测是否需要扩容
         resize();
-
         // 拿到索引
         int index = index(key);
         // 取出index位置上的红黑树结点
         Node<K, V> rootNode = table[index];
         if (rootNode == null) {
             // 如果根结点为空，初始化结点
-            rootNode = new Node<>(key, value, null);
+            rootNode = createNode(key, value, null);
             // 放到对应桶里面
             table[index] = rootNode;
             size++;
             // 新增加了一个结点后一定要修复红黑树性质
-            afterPut(rootNode);
+            fixAfterPut(rootNode);
+            return value;
         }
         // 桶上面已经有结点了，即发生了hash冲突
-        Node<K, V> parent = rootNode;
+        Node<K, V> parent;
         Node<K, V> node = rootNode;
         int cmp = 0;
         // 计算添加结点key的hash值
@@ -236,8 +236,24 @@ public class HashMap<K, V> implements Map<K, V> {
         size++;
 
         //判断是否需要平衡这棵二叉树
-        afterPut(newNode);
+        fixAfterPut(newNode);
         return null;
+    }
+
+    /**
+     * 创建一个结点
+     */
+    protected Node<K, V> createNode(
+            K k,
+            V v,
+            Node<K, V> parent) {
+        return new Node<>(k, v, parent);
+    }
+
+    /**
+     * 删除结点后的操作，注意这里不是修复红黑树的性质
+     */
+    protected void afterRemove(Node<K, V> removedNode) {
     }
 
     /**
@@ -245,11 +261,93 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     private void resize() {
         // 装填因子小于等于0.75
-        if(size / table.length <= DEFAULT_LOAD_FACTOR) return;
+        if (size / table.length <= DEFAULT_LOAD_FACTOR) return;
+        System.out.println("map进行了扩容,原容量为：" + table.length + "，新容量为：" + (table.length << 1));
         // 先保留一下旧的数组
-        Node<K,V>[] oldTable = table;
+        Node<K, V>[] oldTable = table;
         // 扩容两倍
-        table = new Node[oldTable.length >> 1];
+        table = new Node[oldTable.length << 1];
+        // 移动所有的结点到新的桶上面
+        // 这里手动遍历所有的桶
+        // 准备一个栈
+        Queue<Node<K, V>> queue = new LinkedList<>();
+        for (Node<K, V> kvNode : oldTable) {
+            if (kvNode == null) continue;
+            // 将桶上根结点入队
+            queue.offer(kvNode);
+            while (!queue.isEmpty()) {
+                // 出栈
+                Node<K, V> popNode = queue.poll();
+                if (popNode.left != null) queue.offer(popNode.left);
+                if (popNode.right != null) queue.offer(popNode.right);
+                // 挪动结点，需要写在入队代码之后
+                moveNode(kvNode);
+            }
+        }
+    }
+
+    private void moveNode(Node<K, V> newNode) {
+        // 重置该结点的所有引用
+        newNode.parent = null;
+        newNode.left = null;
+        newNode.right = null;
+        // 树结点默认应该为red
+        red(newNode);
+        // 拿到索引
+        int index = index(newNode);
+        // 取出index位置上的红黑树结点
+        Node<K, V> rootNode = table[index];
+        if (rootNode == null) {
+            // 如果根结点为空，初始化结点
+            rootNode = newNode;
+            // 放到对应桶里面
+            table[index] = rootNode;
+            // 新增加了一个结点后一定要修复红黑树性质
+            fixAfterPut(rootNode);
+            return;
+        }
+        // 桶上面已经有结点了，即发生了hash冲突
+        Node<K, V> parent;
+        Node<K, V> node = rootNode;
+        int cmp;
+        K key = newNode.key;
+        // 计算添加结点key的hash值
+        int h1 = newNode.hashCode;
+        do {
+            K k2 = node.key;
+            int h2 = node.hashCode;
+            // 挪动的时候只需要考虑是往左走还是往右走，不需要equals
+            if (h1 > h2) {
+                cmp = 1;
+            } else if (h1 < h2) {
+                cmp = -1;
+            } else if (key != null && k2 != null // 比较类名或者自身的compareTo方法
+                    && key.getClass() == k2.getClass()
+                    && key instanceof Comparable
+                    && (cmp = ((Comparable) key).compareTo(k2)) != 0) {
+                // nothing to do
+            } else {
+                cmp = System.identityHashCode(key) - System.identityHashCode(k2);
+            }
+            /*----------------------------下面是红黑树结点的摆放---------------------------------*/
+            //保存当前结点的父结点
+            parent = node;
+            if (cmp > 0) {
+                node = node.right;
+            } else if (cmp < 0) {
+                node = node.left;
+            }
+        } while (node != null);
+        // 因为是移动结点，不可能出现相等的情况
+        if (cmp > 0) {
+            parent.right = newNode;
+        } else {
+            parent.left = newNode;
+        }
+        // 设置移动结点的父结点
+        newNode.parent = parent;
+        //判断是否需要平衡这棵二叉树
+        fixAfterPut(newNode);
     }
 
 
@@ -269,8 +367,8 @@ public class HashMap<K, V> implements Map<K, V> {
         // 先计算hash值，k1需要经过扰动计算
         int h1 = hash(k1);
         // 存放查找的结果
-        Node<K, V> result = null;
-        int cmp = 0;
+        Node<K, V> result;
+        int cmp;
         while (node != null) {
             K k2 = node.key;
             // h2是经过了扰动计算的
@@ -315,7 +413,7 @@ public class HashMap<K, V> implements Map<K, V> {
     /**
      * 根据结点删除该结点
      */
-    private V remove(Node<K, V> node) {
+    protected V remove(Node<K, V> node) {
         if (node == null) return null;
         // 计算桶的位置
         int index = index(node.key);
@@ -351,7 +449,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 node.parent.right = replaceNode;
             }
             //删除结点之后的处理
-            afterRemove(replaceNode);
+            fixAfterRemove(replaceNode);
         } else if (node.parent == null) {
             //node是叶子结点并且是根结点,直接让该结点为null
             table[index] = null;
@@ -365,16 +463,18 @@ public class HashMap<K, V> implements Map<K, V> {
                 node.parent.right = null;
             }
             //删除结点之后的处理，这里也不需要替代
-            afterRemove(node);
+            fixAfterRemove(node);
         }
         size--;
+        // 删除结点后的操作，交给子类去实现
+        afterRemove(node);
         return oldValue;
     }
 
     /**
      * 删除之后的补偿策略
      */
-    protected void afterRemove(Node<K, V> node) {
+    protected void fixAfterRemove(Node<K, V> node) {
         // 如果删除的节点是红色
         // 或者 用以取代删除节点的子节点是红色
         if (isRed(node)) {
@@ -405,7 +505,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 black(parent);
                 red(sibling);
                 if (parentBlack) {
-                    afterRemove(parent);
+                    fixAfterRemove(parent);
                 }
             } else { // 兄弟节点至少有1个红色子节点，向兄弟节点借元素
                 // 兄弟节点的左边是黑色，兄弟要先旋转
@@ -435,7 +535,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 black(parent);
                 red(sibling);
                 if (parentBlack) {
-                    afterRemove(parent);
+                    fixAfterRemove(parent);
                 }
             } else { // 兄弟节点至少有1个红色子节点，向兄弟节点借元素
                 // 兄弟节点的左边是黑色，兄弟要先旋转
@@ -590,7 +690,7 @@ public class HashMap<K, V> implements Map<K, V> {
     /**
      * 修复红黑树性质
      */
-    private void afterPut(Node<K, V> node) {
+    private void fixAfterPut(Node<K, V> node) {
         // 先取出父结点
         Node<K, V> parent = node.parent;
         // 添加的是根结点(将其染成黑色并返回)或者上溢到根结点
@@ -610,7 +710,7 @@ public class HashMap<K, V> implements Map<K, V> {
             black(uncle);
             // 把祖父结点当做是新添加的结点
             // 递归调用
-            afterPut(red(grand));
+            fixAfterPut(red(grand));
             return;
         }
         /*

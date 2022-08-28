@@ -12,13 +12,48 @@ import java.util.Stack;
  */
 public class _20_有效的括号 {
     public static void main(String[] args) {
-        String s = "(()[]{}";
-        System.out.println(isValid2(s));
+        String s = "****";
+        System.out.println(isValid4(s));
+    }
+
+    public static boolean isValid4(String s) {
+        Stack<Character> stack = new Stack<>();
+        // 拿到字符数组
+        char[] chars = s.toCharArray();
+        for (char c : chars) {
+            if (c == '(' || c == '{' || c == '[') {
+                // 入栈
+                stack.push(c);
+            } else if (c == ')' || c == '}' || c == ']') {
+                // 出栈
+                if (stack.isEmpty()) return false;
+                char pop = stack.pop();
+                // 如果是 * ，可以匹配任意字符，直接跳过
+                if (pop == '*') continue;
+                if (c == ')' && pop != '(') {
+                    return false;
+                } else if (c == ']' && pop != '[') {
+                    return false;
+                } else if (c == '}' && pop != '{') {
+                    return false;
+                }
+            } else {
+                // char为 * 的情况，这种要单独进行处理
+                // 如果栈为空，将*入栈
+                if (stack.isEmpty()) {
+                    stack.push(c);
+                } else {
+                    // 因为 * 可以匹配任意符号，所以直接出栈一个符号
+                    stack.pop();
+                }
+            }
+        }
+        return stack.isEmpty() || stack.contains('*');
     }
 
     //使用hashMap优化
     public static boolean isValid3(String s) {
-        Map<Character,Character> map = new HashMap<>();
+        Map<Character, Character> map = new HashMap<>();
         //然后用map做匹配，灵活一些
         Stack<Character> stack = new Stack<>();
         //遍历字符串

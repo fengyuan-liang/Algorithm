@@ -1,7 +1,7 @@
 package com.Tencent.practice;
 
 
-import com.fx.practice._01_链表.ListNode;
+import com.fx.practice.utils.ListNode;
 
 import java.util.Objects;
 

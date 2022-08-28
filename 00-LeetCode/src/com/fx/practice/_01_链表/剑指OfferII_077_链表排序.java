@@ -1,5 +1,7 @@
 package com.fx.practice._01_链表;
 
+import com.fx.practice.utils.ListNode;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -13,14 +15,14 @@ import java.util.stream.Collectors;
  */
 public class 剑指OfferII_077_链表排序 {
     public static void main(String[] args) {
-        ListNode node=new ListNode(11);
+        ListNode node = new ListNode(11);
         ListNode head = null;
         for (int i = 10; i > 0; i--) {
-            node.next=new ListNode(i);
-            if(head == null){
-                head=node;
-           }
-            node=node.next;
+            node.next = new ListNode(i);
+            if (head == null) {
+                head = node;
+            }
+            node = node.next;
         }
         ListNode listNode = sortList(head);
         StringBuilder sbd = new StringBuilder();
@@ -32,27 +34,26 @@ public class 剑指OfferII_077_链表排序 {
     }
 
 
-
     /**
      * 无耻的使用Java API
      */
     public static ListNode sortList(ListNode head) {
-        List<ListNode> list=new ArrayList<>();
+        List<ListNode> list = new ArrayList<>();
         ListNode node = null;
-        while (head!=null){
+        while (head != null) {
             list.add(head);
-            head=head.next;
+            head = head.next;
         }
         List<ListNode> collect = list.stream()
                 .sorted(Comparator.comparingInt(o -> o.val))
                 .collect(Collectors.toList());
-        for(ListNode listnode:collect){
-            if(node==null){
-                node=new ListNode(listnode.val);
-                head=node;
-            }else {
-                node.next=new ListNode(listnode.val);
-                node=node.next;
+        for (ListNode listnode : collect) {
+            if (node == null) {
+                node = new ListNode(listnode.val);
+                head = node;
+            } else {
+                node.next = new ListNode(listnode.val);
+                node = node.next;
             }
         }
         return head;

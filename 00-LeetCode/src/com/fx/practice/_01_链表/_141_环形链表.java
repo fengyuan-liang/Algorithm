@@ -1,5 +1,7 @@
 package com.fx.practice._01_链表;
 
+import com.fx.practice.utils.ListNode;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,12 +18,12 @@ public class _141_环形链表 {
      * 空间复杂度：o(n)n 为结点个数
      */
     public boolean hasCycle2(ListNode head) {
-        Set<ListNode> set=new HashSet<>();
-        while (head != null){
-            if(!set.add(head)){
+        Set<ListNode> set = new HashSet<>();
+        while (head != null) {
+            if (!set.add(head)) {
                 return true;
             }
-            head=head.next;
+            head = head.next;
         }
         return false;
     }
@@ -30,12 +32,12 @@ public class _141_环形链表 {
      * 快慢指针
      */
     public boolean hasCycle(ListNode head) {
-        if(head==null || head.next==null) return false;
-        ListNode fast=head.next;
-        ListNode slow=head;
-        while (fast==null || fast.next==null){
-            fast=fast.next.next;
-            slow=slow.next;
+        if (head == null || head.next == null) return false;
+        ListNode fast = head.next;
+        ListNode slow = head;
+        while (fast == null || fast.next == null) {
+            fast = fast.next.next;
+            slow = slow.next;
             if (slow == fast) return true;
         }
         return false;

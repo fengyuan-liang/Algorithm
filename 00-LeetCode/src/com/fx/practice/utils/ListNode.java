@@ -1,4 +1,4 @@
-package com.fx.practice._01_链表;
+package com.fx.practice.utils;
 
 /**
  *

@@ -8,6 +8,9 @@ import com.fx.model.SubKey1;
 import com.fx.model.SubKey2;
 import org.junit.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 /**
  * <p>
  *
@@ -65,7 +68,7 @@ public class TestHashMap {
     public void test03() {
         HashMap<Key, Integer> map = new HashMap<>();
         for (int i = 1; i < 19; i++) {
-            map.put(new Key(i),i);
+            map.put(new Key(i), i);
         }
         for (int i = 0; i < 20; i++) {
             System.out.print(map.get(new Key(1)) + "\t");
@@ -76,18 +79,34 @@ public class TestHashMap {
     public void test04() {
         SubKey1 k1 = new SubKey1(1);
         SubKey2 k2 = new SubKey2(1);
-        Map<Object,Integer> map = new HashMap<>();
-        map.put(k1,1);
-        map.put(k2,2);
+        Map<Object, Integer> map = new HashMap<>();
+        map.put(k1, 1);
+        map.put(k2, 2);
         System.out.println(map.size());
     }
 
     @Test
     public void test05() {
         test2(new HashMap<>());
-		test3(new HashMap<>());
-		test4(new HashMap<>());
-		test5(new HashMap<>());
+        test3(new HashMap<>());
+        test4(new HashMap<>());
+        test5(new HashMap<>());
+    }
+
+    @Test
+    public void test06() {
+        LocalDateTime start = LocalDateTime.now();
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < 10_000_000; i++) {
+            map.put(i, i);
+        }
+        System.out.println("存储元素个数为：" + map.size());
+        System.out.println("耗时：" + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
+        start = LocalDateTime.now();
+        for (int i = 0; i < 1_000_000; i++) {
+            map.get(i);
+        }
+        System.out.println("查询一百万条数据耗时：" + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
     }
 
     static void test2(HashMap<Object, Integer> map) {
@@ -123,7 +142,7 @@ public class TestHashMap {
         Asserts.test(map.containsKey(10));
         Asserts.test(map.containsKey(null));
         Asserts.test(map.containsValue(null));
-        Asserts.test(map.containsValue(1) == false);
+        Asserts.test(!map.containsValue(1));
     }
 
     static void test4(HashMap<Object, Integer> map) {

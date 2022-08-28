@@ -1,5 +1,7 @@
 package com.fx.practice._01_链表;
 
+import com.fx.practice.utils.ListNode;
+
 /**
  * @author: 梁峰源
  * @date: 2022/1/6 21:56
