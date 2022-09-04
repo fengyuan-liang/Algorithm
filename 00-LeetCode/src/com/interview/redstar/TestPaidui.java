@@ -1,4 +1,4 @@
-package com.other;
+package com.interview.redstar;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
