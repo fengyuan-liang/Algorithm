@@ -252,8 +252,11 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 删除结点后的操作，注意这里不是修复红黑树的性质
+     *
+     * @param willNode    红黑树中想要删除的结点
+     * @param removedNode 红黑树中实际要删除的结点
      */
-    protected void afterRemove(Node<K, V> removedNode) {
+    protected void afterRemove(Node<K, V> willNode, Node<K, V> removedNode) {
     }
 
     /**
@@ -415,6 +418,8 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     protected V remove(Node<K, V> node) {
         if (node == null) return null;
+        // 开始想要删除的结点,此处是为了处理linkedHashMap的删除逻辑
+        Node<K, V> willNode = node;
         // 计算桶的位置
         int index = index(node.key);
         V oldValue = node.value;
@@ -467,7 +472,7 @@ public class HashMap<K, V> implements Map<K, V> {
         }
         size--;
         // 删除结点后的操作，交给子类去实现
-        afterRemove(node);
+        afterRemove(willNode, node);
         return oldValue;
     }
 

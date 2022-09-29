@@ -1,5 +1,6 @@
 package com.fx.practice._01_链表;
 
+import com.fx.practice.utils.LinkedListUtil;
 import com.fx.practice.utils.ListNode;
 
 /**
@@ -9,11 +10,17 @@ import com.fx.practice.utils.ListNode;
  */
 public class _206_反转链表 {
 
+    public static void main(String[] args) {
+        ListNode head = LinkedListUtil.ofRandomLinkedList(5, 100);
+        LinkedListUtil.print(head);
+        ListNode listNode = reverseList(head);
+        LinkedListUtil.print(listNode);
+    }
 
     /**
      * 非递归（迭代法）
      */
-    public ListNode reverseList2(ListNode head) {
+    public static ListNode reverseList2(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode newHead = null;
         ListNode temp;
@@ -29,7 +36,7 @@ public class _206_反转链表 {
     /**
      * 递归实现
      */
-    public ListNode reverseList(ListNode head) {
+    public static ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode newNode = reverseList(head.next);
         head.next.next = head;

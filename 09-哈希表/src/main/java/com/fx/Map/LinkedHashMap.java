@@ -7,8 +7,8 @@ import java.util.function.BiConsumer;
  * LinkedHashMap,红黑树上面的所有结点都用线连接起来了
  * </p>
  *
- * @since 2022/7/21 9:35
  * @author 梁峰源
+ * @since 2022/7/21 9:35
  */
 public class LinkedHashMap<K, V> extends HashMap<K, V> {
 
@@ -82,11 +82,42 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
      * 这里并不是删除结点后修复红黑树性质的代码，而是修复链表和红黑树结点指向关系的代码
      */
     @Override
-    protected void afterRemove(Node<K, V> removedNode) {
-        if (removedNode == null) return;
-        LinkedNode<K, V> linkedNode = (LinkedNode<K, V>) removedNode;
-        LinkedNode<K, V> prev = linkedNode.prev;
-        LinkedNode<K, V> next = linkedNode.next;
+    protected void afterRemove(Node<K, V> willNode, Node<K, V> removedNode) {
+        LinkedNode<K, V> linkedWillNode = (LinkedNode<K, V>) willNode;
+        LinkedNode<K, V> linkedRemoveNode = (LinkedNode<K, V>) removedNode;
+        // 如果想要删除的实际要删除的结点不一样，表示该结点为红黑树中度为2的结点，需要交换链表的指向
+        if (linkedRemoveNode != linkedWillNode) {
+            // 设置中间结点,处理prev
+            LinkedNode<K, V> temp = linkedWillNode.prev;
+            linkedWillNode.prev = linkedRemoveNode.prev;
+            linkedRemoveNode.prev = temp;
+            if (linkedWillNode.prev == null) {
+                first = linkedWillNode;
+            } else {
+                linkedWillNode.prev.next = linkedWillNode;
+            }
+            if (linkedRemoveNode.prev == null) {
+                first = linkedRemoveNode;
+            } else {
+                linkedRemoveNode.prev.next = linkedRemoveNode;
+            }
+            // 处理next
+            temp = linkedWillNode.next;
+            linkedWillNode.next = linkedRemoveNode.next;
+            linkedRemoveNode.next = temp;
+            if (linkedWillNode.next == null) {
+                last = linkedWillNode;
+            } else {
+                linkedWillNode.next.prev = linkedWillNode;
+            }
+            if (linkedRemoveNode.next == null) {
+                last = linkedRemoveNode;
+            } else {
+                linkedRemoveNode.next.prev = linkedRemoveNode;
+            }
+        }
+        LinkedNode<K, V> prev = linkedRemoveNode.prev;
+        LinkedNode<K, V> next = linkedRemoveNode.next;
         if (prev == null) {
             // 是头结点，那么下一个结点成为头结点
             first = next;

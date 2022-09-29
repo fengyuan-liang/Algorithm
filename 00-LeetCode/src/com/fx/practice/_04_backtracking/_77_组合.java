@@ -11,4 +11,7 @@ package com.fx.practice._04_backtracking;
  * @since 2022/9/14 23:45
  */
 public class _77_组合 {
+    public static void main(String[] args) {
+
+    }
 }
