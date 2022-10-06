@@ -10,19 +10,19 @@ import java.util.Comparator;
  */
 public class JdkStrategy {
     public static void main(String[] args) {
-        Integer[] data={9,1,2,8,4,3};
+        Integer[] data = {9, 1, 2, 8, 4, 3};
         //需求，实现升序排列，返回-1放左边，1放右边，0保持不变
         //实现了策略接口的对象
-        Comparator<Integer> comparator= (o1, o2) -> {
-            if(o1>o2) {
+        Comparator<Integer> comparator = (o1, o2) -> {
+            if (o1 > o2) {
                 return 1;//自定义策略
-            }else if(o1<o2){
+            } else if (o1 < o2) {
                 return -1;
-            }else {
+            } else {
                 return 0;
             }
         };
-        Arrays.sort(data,comparator);
+        Arrays.sort(data, comparator);
         System.out.println(Arrays.toString(data));
     }
 }
