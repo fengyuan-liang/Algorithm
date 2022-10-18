@@ -22,7 +22,7 @@ public class _77_组合 {
     }
 
     public List<List<Integer>> combine(int n, int k) {
-        // 
+        // 从1开始的
         backtracking(n, k, 1);
         return result;
     }
