@@ -21,12 +21,12 @@ public class _17_电话号码的字母组合 {
 
     public static List<String> letterCombinations(String str1) {
         // 回溯要有出口
-        if("".equals(digits)){
-            return null;
-        }
-        for (int i = 0; i < digits.length(); i++) {
-
-        }
+//        if("".equals(digits)){
+//            return null;
+//        }
+//        for (int i = 0; i < digits.length(); i++) {
+//
+//        }
         return null;
     }
 
