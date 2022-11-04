@@ -18,31 +18,37 @@ public class _在二叉树中找到两个节点的最近公共祖先_ {
         String str = sc.nextLine();
         int totalNodeNum = Integer.parseInt(str.split(" ")[0]), root = Integer.parseInt(str.split(" ")[1]);
         arr[root] = 0;
-        while (sc.hasNext() && totalNodeNum > 0) {
+        int node1 = 0, node2 = 0;
+        while (totalNodeNum > 0 && sc.hasNext()) {
             // 第一个元素是后面元素的父结点
             String[] strs = sc.nextLine().split(" ");
-            int father = Integer.parseInt(strs[0]);
-            int left = Integer.parseInt(strs[1]);
-            int right = Integer.parseInt(strs[2]);
-            // 只需要管左子树和右子树的结点
-            if (left != 0) {
-                arr[left] = father;
-                totalNodeNum--;
-            }
-            if (right != 0) {
-                arr[right] = father;
+            if (strs.length == 3) {
+                int father = Integer.parseInt(strs[0]);
+                int left = Integer.parseInt(strs[1]);
+                int right = Integer.parseInt(strs[2]);
+                // 只需要管左子树和右子树的结点
+                if (left != 0) {
+                    arr[left] = father;
+                    totalNodeNum--;
+                }
+                if (right != 0) {
+                    arr[right] = father;
+                    totalNodeNum--;
+                }
+            } else {
+                node1 = Integer.parseInt(strs[0]);
+                node2 = Integer.parseInt(strs[1]);
                 totalNodeNum--;
             }
         }
         // 拿到要寻找公共结点的两个结点
-        String[] s = sc.nextLine().split(" ");
-        int node1 = Integer.parseInt(s[0]), node2 = Integer.parseInt(s[1]);
         // 先计算结点往上遍历一共需要多少步
         while (arr[node1] != 0) {
             int var = node2;
             while (arr[var] != 0) {
-                if(arr[node1] == arr[var]){
+                if (arr[node1] == arr[var]) {
                     System.out.println(arr[node1]);
+                    System.exit(1);
                 }
             }
         }
