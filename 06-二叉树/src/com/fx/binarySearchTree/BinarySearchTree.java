@@ -114,11 +114,11 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             //先修改node.parent的指向
             replaceNode.parent = node.parent;
             //修改parent的left、right指向
-            if(node.parent == null){ //node是度为1的结点且是根结点
+            if (node.parent == null) { //node是度为1的结点且是根结点
                 root = replaceNode;
-            }else if(node == node.parent.left){
+            } else if (node == node.parent.left) {
                 node.parent.left = replaceNode;
-            }else {
+            } else {
                 node.parent.right = replaceNode;
             }
         } else if (node.parent == null) {

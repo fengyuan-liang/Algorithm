@@ -17,7 +17,7 @@ import java.util.List;
 public class _77_组合 {
     public static void main(String[] args) {
         _77_组合 obj = new _77_组合();
-        List<List<Integer>> combine = obj.combine(4, 4);
+        List<List<Integer>> combine = obj.combine(4, 2);
         System.out.println(combine);
     }
 
