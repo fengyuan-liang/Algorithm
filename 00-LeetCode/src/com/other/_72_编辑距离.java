@@ -38,4 +38,10 @@ public class _72_编辑距离 {
     private int minimum(int i, int j, int k) {
         return Math.min(i, Math.min(j, k));
     }
+    private void a () {
+        aaa aaa = new aaa();
+    }
+    private class aaa {
+
+    }
 }
