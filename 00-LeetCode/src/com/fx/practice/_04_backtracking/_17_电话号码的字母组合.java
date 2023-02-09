@@ -3,9 +3,7 @@ package com.fx.practice._04_backtracking;
 import java.util.*;
 
 /**
- * <p>
- *
- * </p>
+ * see: <a href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">17. 电话号码的字母组合</a>
  *
  * @author 梁峰源
  * @since 2022/11/1 0:27
@@ -13,36 +11,49 @@ import java.util.*;
 public class _17_电话号码的字母组合 {
     private static final Map<Integer, char[]> DEFAULT_MAP = new HashMap<>();
 
-    public static void main(String[] args) {
-        Integer value = getInt();
+    static {
         initDefaultMap();
-        System.out.println();
     }
 
-    public static List<String> letterCombinations(String str1) {
+    public static void main(String[] args) {
+        letterCombinations("");
+    }
+
+    public static List<String> letterCombinations(String digits) {
         // 回溯要有出口
-//        if("".equals(digits)){
-//            return null;
-//        }
-//        for (int i = 0; i < digits.length(); i++) {
-//
-//        }
+        if("".equals(digits)){
+            return null;
+        }
+        for (int i = 0; i < digits.length(); i++) {
+
+        }
         return null;
     }
 
-    private static Integer getInt() {
-        Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
+    private static List<String> backTracking(int n, int k, int startIndex) {
+        return null;
+    }
+
+
+
+    private static Integer[] getInt(String line) {
         if (line.contains("digits = \"\"")) {
             System.out.println(new ArrayList<Void>());
             System.exit(1);
         }
         String str = line.split("\"")[1];
-        return Integer.parseInt(str.trim());
+        char[] chars = str.toCharArray();
+        Integer[] arr = new Integer[str.length()];
+        // 按照字符分割
+        for (int i = 0; i < chars.length; i++) {
+            System.out.println(chars[i]);
+            arr[i] = Integer.parseInt(String.valueOf(chars[i]));
+        }
+        return arr;
     }
 
     private static void initDefaultMap() {
-        int cnt = 3;
+        int cnt;
         int cha = 'a';
         char[] chars;
         for (int i = 2; i <= 9; i++) {
