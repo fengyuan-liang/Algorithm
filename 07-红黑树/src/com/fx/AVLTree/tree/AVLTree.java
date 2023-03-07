@@ -110,6 +110,7 @@ public class AVLTree<E> extends BBST<E> {
 
     /**
      * 删除元素进行平衡
+     *
      * @param node 删除的结点
      */
     @Override
@@ -171,20 +172,20 @@ public class AVLTree<E> extends BBST<E> {
         if (parent.isLeftChild()) { //L
             if (node.isLeftChild()) {  //LL
 //                rotateRight(grand);
-                rotate(grand,node.left,node,node.right,parent,parent.right,grand,grand.right);
+                rotate(grand, node.left, node, node.right, parent, parent.right, grand, grand.right);
             } else {  //LR
 //                rotateLeft(parent);
 //                rotateRight(grand);
-                rotate(grand,parent.left,parent,node.left,node,node.right,grand,grand.right);
+                rotate(grand, parent.left, parent, node.left, node, node.right, grand, grand.right);
             }
         } else {  //R
             if (node.isLeftChild()) {  //RL
 //                rotateRight(parent);
 //                rotateLeft(grand);
-                rotate(grand,grand.left,grand,node.left,node,node.right,parent,parent.right);
+                rotate(grand, grand.left, grand, node.left, node, node.right, parent, parent.right);
             } else {  //RR
 //                rotateLeft(grand);
-                rotate(grand,grand.left,grand,parent.left,parent,node.left,node,node.right);
+                rotate(grand, grand.left, grand, parent.left, parent, node.left, node, node.right);
             }
         }
     }
