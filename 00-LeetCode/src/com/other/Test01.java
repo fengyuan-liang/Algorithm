@@ -26,7 +26,9 @@ package com.other;
  */
 public class Test01 {
     public static void main(String[] args) {
-
+        System.out.println(((Math.pow(2, 37)) + "").length());
+        System.out.println((1L << 40) > 9_9999_9999_9999L);
+        System.out.println(System.currentTimeMillis());
     }
 
     int getMaxSum(int[] arr) {
