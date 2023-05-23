@@ -13,39 +13,27 @@ import java.util.Comparator;
  * @author 梁峰源 <fengyuan-liang@foxmail.com>
  * @since 2023/5/18 21:42
  */
-public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
+public class BinaryHeap<E> extends AbstractHeap<E> implements Heap<E>, BinaryTreeInfo {
 
     private E[] elements;
-    private int size;
-    private Comparator<E> comparator;
+
     private static final int DEFAULT_CAPACITY = 10;
 
     @SuppressWarnings("unchecked")
     public BinaryHeap(Comparator<E> comparator) {
-        this.comparator = comparator;
+        super(comparator);
         this.elements = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
-    @SuppressWarnings("unchecked")
     public BinaryHeap() {
-        this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+        this(null);
     }
 
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        Arrays.fill(elements, null);
-        return size == 0;
-    }
 
     @Override
     public void clear() {
+        Arrays.fill(elements, null);
         size = 0;
-
     }
 
     @Override
@@ -64,7 +52,33 @@ public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
 
     @Override
     public E remove() {
+        checkEmpty();
+        // 用最后一个结点覆盖根结点
+        E root = elements[0];
+        // size也要减一
+        elements[0] = elements[size - 1];
+        elements[size - 1] = null;
+        size--;
+        // 进行下滤
+        siftDown(0);
         return null;
+    }
+
+    /**
+     * 下滤
+     *
+     * @param index 结点的索引
+     */
+    private void siftDown(int index) {
+        // 不能是叶子结点（必须要有子结点）
+        int half = size >> 1;
+        while(index < half) {
+            // index 的节点有两种情况
+            // 1. 只有左子节点 2. 同时有左右子节点
+            // 默认跟左子节点进行比较
+            int childIndex = (index << 1) + 1;
+
+        }
     }
 
     @Override
@@ -93,10 +107,6 @@ public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private int compare(E e1, E e2) {
-        return comparator != null ? comparator.compare(e1, e2) : ((Comparable<E>) e1).compareTo(e2);
-    }
 
     private void checkEmpty() {
         if (size == 0) {
