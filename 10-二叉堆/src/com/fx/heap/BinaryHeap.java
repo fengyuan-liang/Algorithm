@@ -19,14 +19,31 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements Heap<E>, BinaryTre
 
     private static final int DEFAULT_CAPACITY = 10;
 
-    @SuppressWarnings("unchecked")
-    public BinaryHeap(Comparator<E> comparator) {
-        super(comparator);
-        this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+    public BinaryHeap() {
+        this(null, null);
     }
 
-    public BinaryHeap() {
-        this(null);
+    public BinaryHeap(Comparator<E> comparator) {
+        this(null, comparator);
+    }
+
+    public BinaryHeap(E[] elements) {
+        this(elements, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public BinaryHeap(E[] elements, Comparator<E> comparator) {
+        super(comparator);
+        if (elements == null || elements.length == 0) {
+            this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+        } else {
+            this.elements = (E[]) new Object[Math.max(elements.length, DEFAULT_CAPACITY)];
+            // 深拷贝
+            System.arraycopy(elements, 0, this.elements, 0, elements.length);
+            size = elements.length;
+            // 批量建堆
+            heapify();
+        }
     }
 
 
@@ -61,7 +78,7 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements Heap<E>, BinaryTre
         size--;
         // 进行下滤
         siftDown(0);
-        return null;
+        return root;
     }
 
     /**
@@ -72,18 +89,45 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements Heap<E>, BinaryTre
     private void siftDown(int index) {
         // 不能是叶子结点（必须要有子结点）
         int half = size >> 1;
-        while(index < half) {
+        E element = elements[index];
+        // 必须只有非叶子结点才能进入循环（第一个叶子结点的索引==非叶子结点的数量）
+        // 更具完全二叉树的性质，第一个叶子结点的索引为：floor(size / 2)
+        while (index < half) {
             // index 的节点有两种情况
             // 1. 只有左子节点 2. 同时有左右子节点
             // 默认跟左子节点进行比较
             int childIndex = (index << 1) + 1;
-
+            E childElement = elements[childIndex];
+            // 右子节点
+            int rightIndex = childIndex + 1;
+            // 选出左右子节点中最大的
+            if (rightIndex < size && compare(elements[rightIndex], elements[childIndex]) > 0) {
+                childIndex = rightIndex;
+                childElement = elements[rightIndex];
+            }
+            if (compare(element, childElement) >= 0) {
+                break;
+            }
+            // 将子结点存放到index位置
+            elements[index] = childElement;
+            index = childIndex;
         }
+        elements[index] = element;
     }
 
     @Override
     public E replace(E element) {
-        return null;
+        checkElementNotNull(element);
+        E root = null;
+        if (size == 0) {
+            elements[0] = element;
+            size++;
+        } else {
+            root = elements[0];
+            elements[0] = element;
+            siftDown(0);
+        }
+        return root;
     }
 
     /**
@@ -92,24 +136,29 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements Heap<E>, BinaryTre
      * @param index 元素在数组中的索引
      */
     private void siftUp(int index) {
+        E element = elements[index];
         while (index > 0) {
-            // 检查父结点是否小于该元素
-            // 父结点编号为`floor(i - 1) / 2`
             int parentIndex = (index - 1) >> 1;
-            if (compare(elements[index], elements[parentIndex]) <= 0) {
-                return;
-            }
-            // 交换元素
-            E tmp = elements[parentIndex];
-            elements[parentIndex] = elements[index];
-            elements[index] = tmp;
+            E parent = elements[parentIndex];
+            if (compare(element, parent) <= 0) break;
+            // 将父元素存储在index位置
+            elements[index] = parent;
+            // 重新赋值index
             index = parentIndex;
+        }
+        elements[index] = element;
+    }
+
+    private void heapify() {
+        // 自下而上的下滤
+        for (int i = (size >> 1) - 1; i >= 0; i--) {
+            siftDown(i);
         }
     }
 
 
     private void checkEmpty() {
-        if (size == 0) {
+        if (size <= 0) {
             throw new IndexOutOfBoundsException("heap is empty");
         }
     }
