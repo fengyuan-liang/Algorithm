@@ -17,6 +17,34 @@ import java.util.PriorityQueue;
 public class BinaryHeapTest {
 
     @Test
+    public void TestTopK() {
+        Integer[] arr = new Integer[]{75, 57, 65, 13, 34, 79, 9, 23, 31, 27, 7, 3, 37, 90, 48, 95, 11, 32, 41};
+        BinaryHeap<Integer> heap = new BinaryHeap<>((o1, o2) -> o2 - o1);
+        int k = 5;
+        for (int i = 0; i < arr.length; i++) {
+            if (heap.size() < k) { // 前k个数添加到小顶堆
+                heap.add(arr[i]);
+            } else if (arr[i] > heap.get()) { // 如果是第k+1个数
+                heap.replace(arr[i]);
+            }
+
+        }
+        BinaryTrees.println(heap);
+        // 输出最大的前五个
+        Arrays.stream(arr)
+                .sorted((o1, o2) -> o2 - o1)
+                .limit(k)
+                .forEach(e -> System.out.print("\t" + e));
+    }
+
+    @Test
+    public void Test() {
+        Integer[] arr = new Integer[]{75, 57, 65, 13, 34, 79, 9, 23, 31, 27, 7, 3, 37, 90, 48, 95, 11, 32, 41};
+        BinaryHeap<Integer> heap = new BinaryHeap<>(arr, (o1, o2) -> o2 - o1);
+        BinaryTrees.println(heap);
+    }
+
+    @Test
     public void TestHeapify() {
         Integer[] arr = new Integer[]{75, 57, 65, 13, 34, 79, 9, 23, 31, 27, 7, 3, 37, 90, 48, 95, 11, 32, 41};
         BinaryHeap<Integer> heap = new BinaryHeap<>(arr);
