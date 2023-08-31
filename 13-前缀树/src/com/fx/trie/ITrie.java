@@ -8,7 +8,7 @@ package com.fx.trie;
  * @author 梁峰源 <fengyuan-liang@foxmail.com>
  * @since 2023/6/24 14:26
  */
-public interface ITrie<V> {
+public interface  ITrie<V> {
     int size();
 
     boolean isEmpty();

@@ -2,6 +2,8 @@ package com.fx.trie;
 
 import org.junit.Test;
 
+import static junit.framework.TestCase.*;
+
 /**
  * <p>
  *
@@ -13,8 +15,21 @@ import org.junit.Test;
 public class TrieTest {
 
     @Test
-    public void Test01() {
-        Character c = '你';
-        System.out.println(c);
+    public void TestAdd() {
+       Trie<Integer> trie = new Trie<>();
+
+       trie.add("cat", 1);
+       trie.add("dog", 2);
+       trie.add("catt", 3);
+       trie.add("dog2", 4);
+       trie.add("你好", 5);
+
+        assertEquals(5, trie.size());
+        assertEquals(Integer.valueOf(5), trie.get("你好"));
+        assertTrue(trie.starsWith("do"));
+        assertTrue(trie.starsWith("dog"));
+        assertTrue(trie.starsWith("ca"));
+        assertTrue(trie.starsWith("catt"));
+        assertFalse(trie.starsWith("cat:t"));
     }
 }
