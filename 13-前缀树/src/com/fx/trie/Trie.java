@@ -118,7 +118,7 @@ public class Trie<V> implements ITrie<V> {
     }
 
     private void keyCheck(String key) {
-        if (key == null || key.length() == 0) {
+        if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("key is empty");
         }
     }

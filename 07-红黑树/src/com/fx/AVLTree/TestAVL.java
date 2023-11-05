@@ -3,7 +3,7 @@ package com.fx.AVLTree;
 import com.fx.AVLTree.tree.AVLTree;
 import com.fx.printer.BinaryTrees;
 import com.fx.tree.BinarySearchTree;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.Instant;
