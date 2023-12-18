@@ -11,10 +11,10 @@ import java.util.Map;
  */
 public class _3_无重复字符的最长子串 {
     public static void main(String[] args) {
-
+        System.out.println(lengthOfLongestSubstring("abcabcccc"));
     }
 
-    public int lengthOfLongestSubstring(String s) {
+    public static int lengthOfLongestSubstring(String s) {
         Map<Character, Integer> map = new HashMap<>();
         int maxLen = 0;//用于记录最大不重复子串的长度
         int left = 0;//滑动窗口左指针
