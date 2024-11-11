@@ -1,10 +1,7 @@
 package com.fx.trie;
 
-import com.fx.arrayList.ArrayList2;
 import org.junit.Test;
-import org.testng.ITest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
