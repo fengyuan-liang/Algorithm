@@ -33,8 +33,7 @@ public class BloomFilter<E> implements IBloomFilter<E> {
         }
         double ln2 = Math.log(2);
         // 求出二进制向量的长度
-        bitSize = (long) Math.max(1, - (n * Math.log(p)) / (ln2 * ln2));
-
+        bitSize = (long) Math.max(1, -(n * Math.log(p)) / (ln2 * ln2));
         // 检查 bitSize 是否超过合理范围
         if (bitSize > (long) Integer.MAX_VALUE * Long.SIZE) {
             throw new IllegalArgumentException("bitSize is too large");
